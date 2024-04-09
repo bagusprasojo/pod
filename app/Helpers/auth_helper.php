@@ -8,7 +8,7 @@ if (!function_exists('is_logged_in')) {
 
         // Gantikan dengan logika validasi sesuai dengan kebutuhan Anda
         
-        return isset($_SESSION['user_id']); // Contoh: Cek apakah ada 'user_id' di sesi
+        return isset($_SESSION['id_user']); // Contoh: Cek apakah ada 'user_id' di sesi
     }
 }
 

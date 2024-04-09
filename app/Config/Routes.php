@@ -13,5 +13,9 @@ $routes->match(['get', 'post'], '/logout', 'AuthController::logout');
 
 $routes->get('/user_dashboard', 'UserDashboard::index');
 $routes->get('/designer_dashboard', 'DesignerDashboard::index');
-$routes->get('/designer_dashboard/add_produk', 'DesignerDashboard::add_produk');
 
+$routes->match(['get', 'post'], '/designer_dashboard/add_produk', 'DesignerDashboard::add_produk');
+
+$routes->get('assets/(:any)', 'Assets::index/$1');
+
+$routes->get('/designer_dashboard/show', 'DesignerDashboard::show');

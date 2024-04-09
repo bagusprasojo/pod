@@ -19,6 +19,7 @@
                 <h5>Silakan Login</h5>
 
                 <form action="<?= site_url('login') ?>" method="post">
+                    <?= csrf_field() ?>
                     <div class="mb-3">
                         <input type="text" name="login" class="form-control" placeholder="Username / Email" >
                     </div>

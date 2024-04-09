@@ -10,124 +10,158 @@
                 include(APPPATH . 'Views/includes/_sidebar_designer.php');               
             ?>
             <div class="col-md-9">
-              <div class="card mb-3" id="profile">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-sm-3">
-                      <h6 class="mb-0">Upload Desain</h6>
+              <form enctype="multipart/form-data" method="POST" action="<?= base_url('designer_dashboard/add_produk') ?>"> 
+                  <?= csrf_field() ?>           
+                  <div class="card mb-3" id="profile">
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col-sm-3">
+                          <h6 class="mb-0">Upload Desain</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">                          
+                          <input type="file" name="gambarInput" id="gambarInput" accept="image/png">
+                        </div>
+                      </div>                  
+                                   
                     </div>
-                    <div class="col-sm-9 text-secondary">
-                      <input type="file" id="gambarInput" accept="image/png">
-                    </div>
-                  </div>                  
-                               
-                </div>
-              </div>
-              <div class="card mb-3" id="preview" style="display: none;">
-                  <div class="card-body">
-                      <div id="gambarPreview" style="text-align: center;">
-                          
+                  </div>
+                  <div class="card mb-3" id="preview" style="display: none;">
+                      <div class="card-body">
+                          <div id="gambarPreview" style="text-align: center;">
+                              
+                          </div>
                       </div>
                   </div>
-              </div>
 
-              <div class="card mb-3" id="data" style="display: block;">
-                <div class="card-body">
-                  <div class="row  mb-3">
-                    <div class="col-sm-2">
-                      <h6 class="mb-0">Nama Desain</h6>
-                    </div>
-                    <div class="col-sm-10">
-                      <input name="nama_desain" type="text" class="form-control" placeholder="Nama Desain">
+                  <div class="card mb-3" id="data" style="display: block;">
+                    <div class="card-body">
+                      <div class="row  mb-3">
+                        <div class="col-sm-2">
+                          <h6 class="mb-0">Nama Desain</h6>
+                        </div>
+                        <div class="col-sm-10">
+                          <input name="nama_desain" type="text" class="form-control" placeholder="Nama Desain">
+                        </div>
+                      </div>
+                      
+                      <div class="row mb-3">
+                        <div class="col-sm-2">
+                          <h6 class="mb-0">Tag</h6>
+                        </div>
+                        <div class="col-sm-10">
+                          <input name="tag" type="text" class="form-control" placeholder="Tag">
+                        </div>
+                      </div>
+                      
+                      <div class="row mb-3">
+                        <div class="col-sm-2">
+                          <h6 class="mb-0">Deskripsi</h6>
+                        </div>
+                        <div class="col-sm-10">
+                          <textarea name="deskripsi" class="form-control" aria-label="With textarea"></textarea>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  
-                  <div class="row mb-3">
-                    <div class="col-sm-2">
-                      <h6 class="mb-0">Tag</h6>
-                    </div>
-                    <div class="col-sm-10">
-                      <input name="tag" type="text" class="form-control" placeholder="Tag">
-                    </div>
-                  </div>
-                  
-                  <div class="row mb-3">
-                    <div class="col-sm-2">
-                      <h6 class="mb-0">Deskripsi</h6>
-                    </div>
-                    <div class="col-sm-10">
-                      <textarea name="deskripsi" class="form-control" aria-label="With textarea"></textarea>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="card mb-3" id="data" style="display: block;">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-md-6">
-                      <canvas id="canvas_o_hitam" style="display: none;"></canvas>
-                      <img id="resultImage" style="width:100%; height: auto;" src="<?= base_url('img/produk/o_hitam.png')?>">
-                    </div>
-                    <div class="col-md-6">
-                      <table class="table">
-                        <thead class="thead-dark">
-                          <tr>
-                            
-                            <th scope="col">Item</th>
-                            <th scope="col">Aktif</th>
-                            <th scope="col">Warna Dasar</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          
-                            <?php foreach ($groupProduks as $groupProduk): ?>
-                              <tr>    
-                                <td><button type="button" id="btn_group_<?=$groupProduk['id_group_produk']?>" class="btn btn-primary btn_group" style="width: 100%;"><?= $groupProduk['name'] ?></button></td>
-                                <td><input id="checkbox_<?=$groupProduk['id_group_produk']?>" type="checkbox" ></td>
-                                <td>
-                                    <div  id="C"  class="row">
-                                        <div id="A" class="col-sm-9">
-                                            <select class="form-control colorSelect">
-                                                <?php 
-                                                    foreach ($produks as $produk): 
-                                                        if ($produk['id_group_produk'] == $groupProduk['id_group_produk']){
-
-                                                ?>
-                                                    <option value="<?= $produk['color']?>" data-color="<?= $produk['color']?>" url-image="<?= base_url($produk['url_image'])?>"><?= $produk['color_name'] ?></option>
-                                                    
-                                                <?php } endforeach; ?>
-                                            </select>
+                  <div class="card mb-3" id="data" style="display: block;">
+                        <div class="card-body">
+                            <div class="row">
+                                <?php foreach ($groupProduks as $groupProduk): ?>
+                                <div class="col-md-6">
+                                    <div class="card mb-3" id="data" style="display: block;">
+                                        <div class="card-body">
+                                            <table width="100%" border="1">
+                                                <tr>
+                                                    <td><input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+                                                        <label for="vehicle1"> I have a bike</label><br>
+                                                    </td>
+                                                    <td>
+                                                        <select name="warna" class="form-control colorSelect">
+                                                            <?php 
+                                                                foreach ($produks as $produk): 
+                                                                    if ($produk['id_group_produk'] == $groupProduk['id_group_produk']) {?>
+                                                                        <option value="<?= $produk['color']?>" data-color="<?= $produk['color']?>" url-image="<?= base_url($produk['url_image'])?>"><?= $produk['color_name'] ?></option>
+                                                                
+                                                            <?php } endforeach; ?>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <div id="B"  class="col-sm-1">  
+                                                            <div class="selectedColor mb-2" style="border-radius: 50%; width: 40px; height: 40px; display: inline-block; margin-left: 1px;"></div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                
+                                            </table>
                                         </div>
-
-                                        <div id="B"  class="col-sm-1">  
-                                            <div class="selectedColor mb-2" style="border-radius: 50%; width: 40px; height: 40px; display: inline-block; margin-left: 1px;"></div>
-                                        </div>
-
-                                        
-                                        
-                                    </div>  
-                                </td>
-                              </tr>
+                                    </div>
+                                </div>
+                                <?php endforeach ?>
+                            </div>    
+                        </div>
+                  </div>
+                  <div class="card mb-3" id="data" style="display: block;">
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col-md-6">
+                          <canvas id="canvas_o_hitam" style="display: none;"></canvas>
+                          <img id="resultImage" style="width:100%; height: auto;" src="<?= base_url('img/produk/o_hitam.png')?>">
+                        </div>
+                        <div class="col-md-6">
+                          <table class="table">
+                            <thead class="thead-dark">
+                              <tr>
                                 
-                            <?php endforeach; ?>                        
+                                <th scope="col">Item</th>
+                                <th scope="col">Aktif</th>
+                                <th scope="col">Warna Dasar</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              
+                                <?php foreach ($groupProduks as $groupProduk): ?>
+                                  <tr>    
+                                    <td><button type="button" id="btn_group_<?=$groupProduk['id_group_produk']?>" class="btn btn-info btn_group" style="width: 100%;"><?= $groupProduk['name'] ?></button></td>
+                                    <td><input name="cb" id="checkbox_<?=$groupProduk['id_group_produk']?>" type="checkbox" /></td>
+                                    <td>
+                                        <div  id="C"  class="row">
+                                            <div id="A" class="col-sm-9">
+                                                <select name="warna" class="form-control colorSelect">
+                                                    <?php 
+                                                        foreach ($produks as $produk): 
+                                                            if ($produk['id_group_produk'] == $groupProduk['id_group_produk']){
+
+                                                    ?>
+                                                        <option value="<?= $produk['color']?>" data-color="<?= $produk['color']?>" url-image="<?= base_url($produk['url_image'])?>"><?= $produk['color_name'] ?></option>
+                                                        
+                                                    <?php } endforeach; ?>
+                                                </select>
+                                            </div>
+
+                                            <div id="B"  class="col-sm-1">  
+                                                <div class="selectedColor mb-2" style="border-radius: 50%; width: 40px; height: 40px; display: inline-block; margin-left: 1px;"></div>
+                                            </div>
+
+                                            
+                                            
+                                        </div>  
+                                    </td>
+                                  </tr>
+                                    
+                                <?php endforeach; ?>                        
+                                
+                            </tbody>
+                          </table>
+                          <button type="submit"  class="btn btn-primary">Simpan</button>
                             
-                        </tbody>
-                      </table>
-                        
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
-
-              
-
-              
+                </form>
             </div>
-
             
           </div>
-
         </div>
     </div>
 
@@ -276,6 +310,12 @@
             });
         });
 
+        // function save_data(){
+        //     alert('message?: DOMString');
+        // }
+
     </script>
+
+    <script src="js/csrf.js"></script>
 
 <?= $this->endSection() ?>
