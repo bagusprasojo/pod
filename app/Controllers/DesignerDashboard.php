@@ -6,6 +6,9 @@ use App\Models\UserModel;
 use App\Models\GroupProdukModel;
 use App\Models\ProdukModel;
 use App\Models\DesainModel;
+use App\Models\DesainGPModel;
+// use Hermawan\DataTables;
+use \Hermawan\DataTables\DataTable;
 
 class DesignerDashboard extends BaseController
 {
@@ -64,8 +67,11 @@ class DesignerDashboard extends BaseController
         if (strtoupper($this->request->getMethod()) === 'GET') {
             return $this->add_produk_get();
         } else {
+            // var_dump($_POST);
+            // die();
+
             $gambar = $this->request->getFile('gambarInput');
-            $path = ROOTPATH . 'assets/desain';
+            $path = ROOTPATH . 'assets/desain/';
             $newName = '';
 
             if ($gambar->isValid() && !$gambar->hasMoved())
@@ -83,26 +89,74 @@ class DesignerDashboard extends BaseController
                 return "Upload failed: $error";
             }
 
-            $desainModel = new DesainModel();
-            $desainData = [
-                'nama' => esc($this->request->getPost('nama_desain')),
-                'tag' => esc($this->request->getPost('tag')),
-                'deskripsi' => esc($this->request->getPost('deskripsi')),
-                'url_desain' => $path . $newName,
-                'desain_aktif' => 1, 
-                'id_user' => $this->user['id_user'],
-                
-            ];
 
-            // var_dump($desainData);
-            // die();
-            $desainModel->insert($desainData);
+            $db = \Config\Database::connect();
+            $db->transBegin();
 
-            echo base_url('asset/desain/' . $newName);
+            try {
+                $desainModel = new DesainModel();
+                $desainData = [
+                    'nama' => esc($this->request->getPost('nama_desain')),
+                    'tag' => esc($this->request->getPost('tag')),
+                    'deskripsi' => esc($this->request->getPost('deskripsi')),
+                    'url_desain' => $path . $newName,
+                    'desain_aktif' => 1, 
+                    'status_aktif' => 'Aktif',
+                    'id_user' => $this->user['id_user'],
+                    
+                ];
+
+                $desainModel->insert($desainData);
+                $idDesain = $desainModel->insertID();
+
+
+                foreach ($_POST as $key => $value) {
+                    if (strpos($key, 'cb_') === 0) {
+                        $cbNumber = substr($key, 3);
+                        $selectKey = 'select_' . $cbNumber;
+
+                        // Periksa apakah elemen select tersedia
+                        if (isset($_POST[$selectKey])) {
+                            $desainGPModel = new DesainGPModel();
+                            $desainGPData = [
+                                'id_desain'=> $idDesain,
+                                'id_group_produk'=> $_POST[$key],
+                                'url'=> '',
+                                'desain_gp_aktif' => 1,
+                                'color'=> $_POST[$selectKey],
+
+                            ];
+
+                            // var_dump($desainGPData);
+                            // die();
+
+                            $desainGPModel->insert($desainGPData);
+                            // echo $db->getLastQuery();
+                            
+                        }
+                    }
+                }
+
+                $db->transCommit();
+
+                return redirect()->to('/designer_dashboard/produk_list');
+            
+            } catch (\Exception $e) {
+                $db->transRollback();
+                return "Error: " . $e->getMessage();
+            } 
         }
 
     }
 
+    public function profile()
+    {
+        return view('designer/designer_profile', [
+            'userData' => $this->userData,
+            'statistics' => $this->statistics,
+            'pager'=>$this->pager
+        ]);
+    }
 
     public function index()
     {
@@ -111,6 +165,23 @@ class DesignerDashboard extends BaseController
             'statistics' => $this->statistics,
             'pager'=>$this->pager
         ]);
+    }
+
+    public function produk_list()
+    {
+        return view('designer/produk_list', [
+            'userData' => $this->userData,
+        ]);
+    }
+
+    public function produk_list_()
+    {
+        $desainModel    = new DesainModel();
+        $button = "'" . '' . "'";
+
+        $desainModel->select('id_desain,nama,deskripsi,tag,tag');
+
+        return DataTable::of($desainModel)->toJson();
     }
 
 }

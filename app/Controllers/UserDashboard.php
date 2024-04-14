@@ -21,10 +21,10 @@ class UserDashboard extends BaseController
 
         // Disini Anda dapat mengakses data-data pribadi user
 
-        $user_id = $session->get('user_id');
+        $id_user = $session->get('id_user');
 
         $userModel = new UserModel();
-        $user = $userModel->where('user_id', $user_id)
+        $user = $userModel->where('id_user', $id_user)
                           ->first();
 
         $userData = [
@@ -32,7 +32,7 @@ class UserDashboard extends BaseController
             'name' => $user['name'],
             'email' => $user['email'],
             'address' => $user['address'],
-            'id' => $user['user_id'],
+            'id' => $user['id_user'],
             'follower_count' => $user['follower_count'],
             'following_count' => $user['following_count'],
         ];

@@ -70,25 +70,33 @@
                                 <div class="col-md-6">
                                     <div class="card mb-3" id="data" style="display: block;">
                                         <div class="card-body">
-                                            <table width="100%" border="1">
+                                            <table width="100%">
                                                 <tr>
-                                                    <td><input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
-                                                        <label for="vehicle1"> I have a bike</label><br>
+                                                    <td><input value="<?=$groupProduk['id_group_produk']?>" name="cb_<?=$groupProduk['id_group_produk']?>" id="cb_<?=$groupProduk['id_group_produk']?>" type="checkbox" class="checkbox"/>
+                                                        <label for="cb_<?=$groupProduk['id_group_produk']?>"><b><?=$groupProduk['name']?></b></label><br>
                                                     </td>
                                                     <td>
-                                                        <select name="warna" class="form-control colorSelect">
+                                                        <select name="select_<?=$groupProduk['id_group_produk']?>" id="select_<?=$groupProduk['id_group_produk']?>" class="form-control colorSelect">
                                                             <?php 
                                                                 foreach ($produks as $produk): 
-                                                                    if ($produk['id_group_produk'] == $groupProduk['id_group_produk']) {?>
-                                                                        <option value="<?= $produk['color']?>" data-color="<?= $produk['color']?>" url-image="<?= base_url($produk['url_image'])?>"><?= $produk['color_name'] ?></option>
+                                                                    if ($produk['id_group_produk'] == $groupProduk['id_group_produk']) {
+                                                                        $selected = "";
+                                                                        if ($produk['color'] == $groupProduk['color']){
+                                                                            $selected = "selected";
+                                                                        }
+
+                                                            ?>
+                                                                        <option <?= $selected ?> value="<?= $produk['color']?>" data-color="<?= $produk['color']?>" url-image="<?= base_url($produk['url_image'])?>"><?= $produk['color_name'] ?></option>
                                                                 
                                                             <?php } endforeach; ?>
                                                         </select>
                                                     </td>
-                                                    <td>
-                                                        <div id="B"  class="col-sm-1">  
-                                                            <div class="selectedColor mb-2" style="border-radius: 50%; width: 40px; height: 40px; display: inline-block; margin-left: 1px;"></div>
-                                                        </div>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2">
+                                                        <canvas id="canvas_<?=$groupProduk['id_group_produk']?>" style="display: none;"></canvas>
+                                                        <img id="resultImage_<?=$groupProduk['id_group_produk']?>" style="width:100%; height: auto;" src="<?= base_url($groupProduk['url'])?>">
                                                     </td>
                                                 </tr>
                                                 
@@ -103,55 +111,7 @@
                   <div class="card mb-3" id="data" style="display: block;">
                     <div class="card-body">
                       <div class="row">
-                        <div class="col-md-6">
-                          <canvas id="canvas_o_hitam" style="display: none;"></canvas>
-                          <img id="resultImage" style="width:100%; height: auto;" src="<?= base_url('img/produk/o_hitam.png')?>">
-                        </div>
-                        <div class="col-md-6">
-                          <table class="table">
-                            <thead class="thead-dark">
-                              <tr>
-                                
-                                <th scope="col">Item</th>
-                                <th scope="col">Aktif</th>
-                                <th scope="col">Warna Dasar</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              
-                                <?php foreach ($groupProduks as $groupProduk): ?>
-                                  <tr>    
-                                    <td><button type="button" id="btn_group_<?=$groupProduk['id_group_produk']?>" class="btn btn-info btn_group" style="width: 100%;"><?= $groupProduk['name'] ?></button></td>
-                                    <td><input name="cb" id="checkbox_<?=$groupProduk['id_group_produk']?>" type="checkbox" /></td>
-                                    <td>
-                                        <div  id="C"  class="row">
-                                            <div id="A" class="col-sm-9">
-                                                <select name="warna" class="form-control colorSelect">
-                                                    <?php 
-                                                        foreach ($produks as $produk): 
-                                                            if ($produk['id_group_produk'] == $groupProduk['id_group_produk']){
-
-                                                    ?>
-                                                        <option value="<?= $produk['color']?>" data-color="<?= $produk['color']?>" url-image="<?= base_url($produk['url_image'])?>"><?= $produk['color_name'] ?></option>
-                                                        
-                                                    <?php } endforeach; ?>
-                                                </select>
-                                            </div>
-
-                                            <div id="B"  class="col-sm-1">  
-                                                <div class="selectedColor mb-2" style="border-radius: 50%; width: 40px; height: 40px; display: inline-block; margin-left: 1px;"></div>
-                                            </div>
-
-                                            
-                                            
-                                        </div>  
-                                    </td>
-                                  </tr>
-                                    
-                                <?php endforeach; ?>                        
-                                
-                            </tbody>
-                          </table>
+                        <div class="col-md-12">
                           <button type="submit"  class="btn btn-primary">Simpan</button>
                             
                         </div>
@@ -189,17 +149,14 @@
 
                     previewDiv.style.display = "block";
                     dataDiv.style.display = "block";
+
+                    var checkboxs = document.querySelectorAll('.checkbox');
+
+                    checkboxs.forEach(function(checkbox) {
+                        checkbox.dispatchEvent(new Event('change'));
+                    });
                 };
-                reader.readAsDataURL(file);
-
-                var resultImage = document.getElementById("resultImage"); 
-                var srcLama = resultImage.src;              
-                resultImage.src = "<?= base_url('img/produk/default.png') ?>";
-                // alert('message?: DOMString')
-                // resultImage.src = srcLama;
-
-                // myFunction(resultImage.src);
-                // resultImage.src = srcLama;
+                reader.readAsDataURL(file);                
             }
         });
 
@@ -244,6 +201,23 @@
             imgProduk.src = imgProdukSrc;
         }
 
+        function mergeImage(url_image, sufix) {
+
+            
+            console.log("sufix : " + sufix);
+            console.log("url_image : " + url_image);
+            var fileInput1 = document.getElementById("gambarInput");
+            var canvas = document.getElementById("canvas_" + sufix);
+            
+            var imgProdukSrc = url_image;
+
+            var imgDesignSrc = URL.createObjectURL(fileInput1.files[0]);
+            var resultImage = document.getElementById("resultImage_" + sufix);
+
+            handleImageProcessing(canvas, imgProdukSrc, imgDesignSrc, resultImage);
+            
+        }
+
         function myFunction(url_image) {
 
             
@@ -258,54 +232,59 @@
             
         }
         
-        document.addEventListener("DOMContentLoaded", function() {
-            const btn_groups = document.querySelectorAll('.btn_group');
+        // document.addEventListener("DOMContentLoaded", function() {
+        //     const btn_groups = document.querySelectorAll('.btn_group');
             
-            btn_groups.forEach(function(btn_group) {
+        //     btn_groups.forEach(function(btn_group) {
 
-                // console.log(btn_group.id);
-                btn_group.addEventListener('click', function() {
-                    // Ambil nilai id group dari tombol
-                    var groupId = this.id.split('_')[2]; // Mendapatkan id group dari id tombol
-                    // console.log(groupId);
+        //         // console.log(btn_group.id);
+        //         btn_group.addEventListener('click', function() {
+        //             // Ambil nilai id group dari tombol
+        //             var groupId = this.id.split('_')[2]; // Mendapatkan id group dari id tombol
+        //             // console.log(groupId);
 
-                    // Ambil nilai option yang dipilih dari select di dalam group yang sesuai
-                    var select = document.querySelector('#btn_group_' + groupId).closest('tr').querySelector('select.colorSelect');
-                    var selectedOption = select.options[select.selectedIndex];
+        //             // Ambil nilai option yang dipilih dari select di dalam group yang sesuai
+        //             var select = document.querySelector('#btn_group_' + groupId).closest('tr').querySelector('select.colorSelect');
+        //             var selectedOption = select.options[select.selectedIndex];
 
-                    // Ambil nilai url-image dari atribut data pada option yang dipilih
-                    var imageUrl = selectedOption.getAttribute('url-image');
+        //             // Ambil nilai url-image dari atribut data pada option yang dipilih
+        //             var imageUrl = selectedOption.getAttribute('url-image');
 
-                    // Lakukan apapun yang perlu dilakukan dengan imageUrl
-                    // console.log('URL Image:', imageUrl);
+        //             // Lakukan apapun yang perlu dilakukan dengan imageUrl
+        //             // console.log('URL Image:', imageUrl);
 
-                    myFunction(imageUrl);
-                });
-            });
-        });
+        //             myFunction(imageUrl);
+        //         });
+        //     });
+        // });
 
         document.addEventListener("DOMContentLoaded", function() {
             var selects = document.querySelectorAll('.colorSelect');
             
             selects.forEach(function(select) {
 
-                console.log('XYZ');
                 select.addEventListener('change', function() {
-                    var selectedColor = this.options[this.selectedIndex].getAttribute('data-color');
                     var imageUrl = this.options[this.selectedIndex].getAttribute('url-image');
-                    // var selectedColorElement = this.parentElement.parentElement.nextElementSibling.querySelector('.selectedColor');
-                    console.log(this.parentElement.id);
-                    console.log(this.parentElement.nextElementSibling);
-                    // console.log(this.parentElement.prevElementSibling.id);
-
-                    var selectedColorElement = this.parentElement.nextElementSibling.querySelector('.selectedColor');
-                
-                    // Atur warna dari elemen "selectedColor" sesuai dengan warna yang dipilih
-                    selectedColorElement.style.backgroundColor = selectedColor;
-                    myFunction(imageUrl);
-                    // console.log(selectedColorElement);
+                    var sufix = this.id.split('_')[1];
+                    mergeImage(imageUrl,sufix);
                     
-                    // selectedColorElement.style.backgroundColor = selectedColor;
+                });
+            });
+
+            var checkboxs = document.querySelectorAll('.checkbox');
+            
+            checkboxs.forEach(function(checkbox) {
+
+                checkbox.addEventListener('change', function() {
+                    var sufix = this.id.split('_')[1];
+
+                    var select = document.getElementById("select_" + sufix);
+                    var selectedColor = select.options[select.selectedIndex].getAttribute('data-color');
+                    var imageUrl = select.options[select.selectedIndex].getAttribute('url-image');
+                    
+                    
+                    mergeImage(imageUrl,sufix);
+                    
                 });
             });
         });
@@ -316,6 +295,6 @@
 
     </script>
 
-    <script src="js/csrf.js"></script>
+    
 
 <?= $this->endSection() ?>

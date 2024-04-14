@@ -14,7 +14,7 @@
               <div class="card mt-3">
                 <ul class="list-group list-group-flush">
                   <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                    <h6 class="mb-0"><i class="mr-2 fa-regular fa-file" aria-hidden="true"></i><a href="<?= site_url('designer_dashboard/add_produk') ?>">Produk</a></h6>
+                    <h6 class="mb-0"><i class="mr-2 fa-regular fa-file" aria-hidden="true"></i><a href="<?= site_url('designer_dashboard/produk_list') ?>">Produk</a></h6>
                     <span class="text-secondary"><?= 1 ?></span>
                   </li>
                   <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">

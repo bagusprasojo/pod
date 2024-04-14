@@ -15,7 +15,8 @@ $routes->get('/user_dashboard', 'UserDashboard::index');
 $routes->get('/designer_dashboard', 'DesignerDashboard::index');
 
 $routes->match(['get', 'post'], '/designer_dashboard/add_produk', 'DesignerDashboard::add_produk');
+$routes->match(['get', 'post'], '/designer_dashboard/produk_list', 'DesignerDashboard::produk_list');
+$routes->match(['get', 'post'], '/designer_dashboard/produk_list_', 'DesignerDashboard::produk_list_');
 
 $routes->get('assets/(:any)', 'Assets::index/$1');
 
-$routes->get('/designer_dashboard/show', 'DesignerDashboard::show');
