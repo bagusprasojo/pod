@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class GroupProdukModel extends Model
 {
-    protected $table = 'group_produk';
+    protected $table = 'm_group_produk';
     protected $primaryKey = 'id_group_produk';
     protected $allowedFields = ['name','url','group_produk_aktif']; // Field yang diizinkan untuk diisi
     protected $useAutoIncrement = true;

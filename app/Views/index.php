@@ -2,204 +2,100 @@
 <?= $this->section('content') ?>
     <section class="py-10">
         <div class="container px-4 px-lg-5 mt-5">
-            <div class="row gx-4 gx-lg-3 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+            <div class="row gx-4 gx-lg-3 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-left">
+                <?php foreach($desains as $desain) { ?>
                 <div class="col mb-3">
                     <div class="card h-100">
                         <!-- Product image-->
-                        <img class="card-img-top" src="<?= base_url('design/1.webp') ?>" alt="..." />
+                        <canvas id="canvas_<?=$desain['id_desain']?>" style="display: none;"></canvas>
+                        <img id="resultImage_<?=$desain['id_desain']?>" class="card-img-top" src="<?= base_url('assets/produk/' . $desain['url_image']) ?>" alt="..." />
                         <!-- Product details-->
                         <div class="card-body p-4">
                             <div class="text-center">
+                                <h5 class="fw-bolder"><?= $desain['nama'] ?></h5>
                                 <!-- Product name-->
-                                <h5 class="fw-bolder"><?php echo base_url()?></h5>
+                                <div class="text-secondary">by <?= $desain['user'] ?></div>
                                 <!-- Product price-->
-                                $40.00 - $80.00
+                                <div class="fw-bolder text-danger"><?= "Rp ".number_format($desain['harga'], 2); ?></div>
+                                
                             </div>
                         </div>
                         <!-- Product actions-->
                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">View options</a></div>
+                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="<?=base_url('/detail/' . $desain['id_desain_gp'])?>">View Detail</a></div>
                         </div>
                     </div>
                 </div>
-                <div class="col mb-3">
-                    <div class="card h-100">
-                        <!-- Sale badge-->
-                        <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
-                        <!-- Product image-->
-                        <img class="card-img-top" src="<?= base_url('design/2.webp') ?>" alt="..." />
-                        <!-- Product details-->
-                        <div class="card-body p-4">
-                            <div class="text-center">
-                                <!-- Product name-->
-                                <h5 class="fw-bolder">Special Item</h5>
-                                <!-- Product reviews-->
-                                <div class="d-flex justify-content-center small text-warning mb-2">
-                                    <div class="bi-star-fill"></div>
-                                    <div class="bi-star-fill"></div>
-                                    <div class="bi-star-fill"></div>
-                                    <div class="bi-star-fill"></div>
-                                    <div class="bi-star-fill"></div>
-                                </div>
-                                <!-- Product price-->
-                                <span class="text-muted text-decoration-line-through">$20.00</span>
-                                $18.00
-                            </div>
-                        </div>
-                        <!-- Product actions-->
-                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col mb-3">
-                    <div class="card h-100">
-                        <!-- Sale badge-->
-                        <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
-                        <!-- Product image-->
-                        <img class="card-img-top" src="<?= base_url('design/3.webp') ?>" alt="..." />
-                        <!-- Product details-->
-                        <div class="card-body p-4">
-                            <div class="text-center">
-                                <!-- Product name-->
-                                <h5 class="fw-bolder">Sale Item</h5>
-                                <!-- Product price-->
-                                <span class="text-muted text-decoration-line-through">$50.00</span>
-                                $25.00
-                            </div>
-                        </div>
-                        <!-- Product actions-->
-                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col mb-3">
-                    <div class="card h-100">
-                        <!-- Product image-->
-                        <img class="card-img-top" src="<?= base_url('design/3.webp') ?>" alt="..." />
-                        <!-- Product details-->
-                        <div class="card-body p-4">
-                            <div class="text-center">
-                                <!-- Product name-->
-                                <h5 class="fw-bolder">Popular Item</h5>
-                                <!-- Product reviews-->
-                                <div class="d-flex justify-content-center small text-warning mb-2">
-                                    <div class="bi-star-fill"></div>
-                                    <div class="bi-star-fill"></div>
-                                    <div class="bi-star-fill"></div>
-                                    <div class="bi-star-fill"></div>
-                                    <div class="bi-star-fill"></div>
-                                </div>
-                                <!-- Product price-->
-                                $40.00
-                            </div>
-                        </div>
-                        <!-- Product actions-->
-                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col mb-3">
-                    <div class="card h-100">
-                        <!-- Sale badge-->
-                        <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
-                        <!-- Product image-->
-                        <img class="card-img-top" src="<?= base_url('design/3.webp') ?>" alt="..." />
-                        <!-- Product details-->
-                        <div class="card-body p-4">
-                            <div class="text-center">
-                                <!-- Product name-->
-                                <h5 class="fw-bolder">Sale Item</h5>
-                                <!-- Product price-->
-                                <span class="text-muted text-decoration-line-through">$50.00</span>
-                                $25.00
-                            </div>
-                        </div>
-                        <!-- Product actions-->
-                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col mb-3">
-                    <div class="card h-100">
-                        <!-- Product image-->
-                        <img class="card-img-top" src="<?= base_url('design/3.webp') ?>" alt="..." />
-                        <!-- Product details-->
-                        <div class="card-body p-4">
-                            <div class="text-center">
-                                <!-- Product name-->
-                                <h5 class="fw-bolder">Fancy Product</h5>
-                                <!-- Product price-->
-                                $120.00 - $280.00
-                            </div>
-                        </div>
-                        <!-- Product actions-->
-                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">View options</a></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col mb-3">
-                    <div class="card h-100">
-                        <!-- Sale badge-->
-                        <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
-                        <!-- Product image-->
-                        <img class="card-img-top" src="<?= base_url('design/3.webp') ?>" alt="..." />
-                        <!-- Product details-->
-                        <div class="card-body p-4">
-                            <div class="text-center">
-                                <!-- Product name-->
-                                <h5 class="fw-bolder">Special Item</h5>
-                                <!-- Product reviews-->
-                                <div class="d-flex justify-content-center small text-warning mb-2">
-                                    <div class="bi-star-fill"></div>
-                                    <div class="bi-star-fill"></div>
-                                    <div class="bi-star-fill"></div>
-                                    <div class="bi-star-fill"></div>
-                                    <div class="bi-star-fill"></div>
-                                </div>
-                                <!-- Product price-->
-                                <span class="text-muted text-decoration-line-through">$20.00</span>
-                                $18.00
-                            </div>
-                        </div>
-                        <!-- Product actions-->
-                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col mb-3">
-                    <div class="card h-100">
-                        <!-- Product image-->
-                        <img class="card-img-top" src="<?= base_url('design/3.webp') ?>" alt="..." />
-                        <!-- Product details-->
-                        <div class="card-body p-4">
-                            <div class="text-center">
-                                <!-- Product name-->
-                                <h5 class="fw-bolder">Popular Item</h5>
-                                <!-- Product reviews-->
-                                <div class="d-flex justify-content-center small text-warning mb-2">
-                                    <div class="bi-star-fill"></div>
-                                    <div class="bi-star-fill"></div>
-                                    <div class="bi-star-fill"></div>
-                                    <div class="bi-star-fill"></div>
-                                    <div class="bi-star-fill"></div>
-                                </div>
-                                <!-- Product price-->
-                                $40.00
-                            </div>
-                        </div>
-                        <!-- Product actions-->
-                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">Add to cart</a></div>
-                        </div>
-                    </div>
-                </div>
+                <?php }?>
+                
+            </div>
+            <div>
+                <?= $pager->links() ?>
             </div>
         </div>
     </section>
+
+<script type="text/javascript">
+    function mergeImage(url_image,url_desain, sufix) {
+            
+        var canvas = document.getElementById("canvas_" + sufix);        
+        var resultImage = document.getElementById("resultImage_" + sufix);
+
+        handleImageProcessing(canvas, url_image, url_desain, resultImage);
+        
+    }
+
+    function handleImageProcessing(canvas, imgProdukSrc, imgDesignSrc, resultImage) {
+        var ctx = canvas.getContext("2d");
+
+        var imgProduk = new Image();
+        var imgDesign = new Image();
+
+        imgProduk.onload = function () {
+            canvas.width = imgProduk.width;
+            canvas.height = imgProduk.height;
+
+            ctx.drawImage(imgProduk, 0, 0);
+
+            imgDesign.onload = function () {
+                
+                var width = canvas.width / 4;
+                var height = (width * imgDesign.height) / imgDesign.width;
+
+                var x = (canvas.width - width) / 2;
+                var y = (canvas.height - height) / 3;
+
+
+                ctx.drawImage(imgDesign, x, y, width, height);
+
+                // Gabungkan gambar 1 dan gambar 2
+                var mergedImage = new Image();
+                mergedImage.src = canvas.toDataURL("image/png");
+                mergedImage.style.display = "block";
+
+                resultImage.src = mergedImage.src;
+                resultImage.style.display = "block";
+            };
+
+
+            imgDesign.src = imgDesignSrc;
+            
+        };
+
+        imgProduk.src = imgProdukSrc;
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        <?php foreach($desains as $desain) { ?>
+            var url_image = '<?php echo base_url("assets/produk/") . $desain['url_image']; ?>';
+            var url_desain = '<?php echo base_url("assets/desain/") . $desain['url_desain']; ?>';
+            var sufix = '<?php echo $desain['id_desain']; ?>';
+            console.log(url_image);
+            console.log(sufix);
+
+            mergeImage(url_image, url_desain, sufix);
+        <?php }?>
+
+    })
+</script>
 <?= $this->endSection() ?>

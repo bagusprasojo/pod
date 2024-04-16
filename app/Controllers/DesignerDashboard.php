@@ -99,7 +99,7 @@ class DesignerDashboard extends BaseController
                     'nama' => esc($this->request->getPost('nama_desain')),
                     'tag' => esc($this->request->getPost('tag')),
                     'deskripsi' => esc($this->request->getPost('deskripsi')),
-                    'url_desain' => $path . $newName,
+                    'url_desain' => $newName,
                     'desain_aktif' => 1, 
                     'status_aktif' => 'Aktif',
                     'id_user' => $this->user['id_user'],
@@ -179,7 +179,7 @@ class DesignerDashboard extends BaseController
         $desainModel    = new DesainModel();
         $button = "'" . '' . "'";
 
-        $desainModel->select('id_desain,nama,deskripsi,tag,tag');
+        $desainModel->select('id_desain,nama,deskripsi,tag,tag')->where('desain_aktif',1);
 
         return DataTable::of($desainModel)->toJson();
     }

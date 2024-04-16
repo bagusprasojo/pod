@@ -2,10 +2,64 @@
 
 namespace App\Controllers;
 
+use App\Models\DesainModel;
+use App\Models\DesainGPModel;
+use App\Models\ProdukModel;
+
 class Home extends BaseController
 {
     public function index(): string
     {
-        return view('index');
+        $id_group_produk = 1;
+
+        $nilai_search = '';
+        if (isset($_GET['search'])) {
+            $nilai_search = esc($_GET['search']);
+        }
+
+        $desainModel = new DesainModel();
+        $desains = $desainModel->select('m_desain.id_desain,m_desain.slug, d.name as user, m_desain.nama,c.url_image, c.color, url_desain, c.harga, b.id_group_produk, b.id_desain_gp')
+                               ->join('m_desain_gp b', 'b.id_desain = m_desain.id_desain') 
+                               ->join('m_produk c', 'b.id_group_produk = c.id_group_produk and b.color = c.color')
+                               ->join('m_user d', 'd.id_user = m_desain.id_user') 
+                               ->where('desain_aktif',1)
+                               ->where('desain_gp_aktif',1)
+                               ->where('b.id_group_produk',$id_group_produk)
+                               ->paginate(6);
+
+        $pager = $desainModel->pager;
+
+        // foreach ($desains as $desain) {
+        //     echo $desain['nama'] . "<br>";
+        // }
+
+        // echo $desainModel->db->getLastQuery()->getQuery();
+        // die();
+
+        return view('index', ['desains' => $desains,'pager' => $pager ]);
+    }
+
+    public function detail($id_desain_gp){
+        $desainGPModel = new DesainGPModel();
+        $desain = $desainGPModel->select('m_desain_gp.*,b.nama as judul,b.deskripsi, b.url_desain, c.url_image, d.name')
+                               ->where('id_desain_gp',$id_desain_gp)
+                               ->join('m_desain b', 'b.id_desain = m_desain_gp.id_desain')
+                               ->join('m_produk c', 'm_desain_gp.id_group_produk = c.id_group_produk and m_desain_gp.color = c.color')
+                               ->join('m_user d','b.id_user = d.id_user')
+                               ->first();
+
+        $produkModel = new ProdukModel();
+        $colors = $produkModel->select('color,color_name,url_image')
+                              ->Where('id_group_produk', $desain['id_group_produk'])
+                              ->where('produk_aktif',1)
+                              ->findAll();
+
+         // echo $desainGPModel->db->getLastQuery()->getQuery();
+         // die();              
+
+        return view('produk_detail', ['desain' => $desain,'colors'=>$colors, ]);
+
+                               
+        
     }
 }

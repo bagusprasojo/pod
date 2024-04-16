@@ -86,7 +86,7 @@
                                                                         }
 
                                                             ?>
-                                                                        <option <?= $selected ?> value="<?= $produk['color']?>" data-color="<?= $produk['color']?>" url-image="<?= base_url($produk['url_image'])?>"><?= $produk['color_name'] ?></option>
+                                                                        <option <?= $selected ?> value="<?= $produk['color']?>" data-color="<?= $produk['color']?>" url-image="<?= base_url('assets/produk/' . $produk['url_image'])?>"><?= $produk['color_name'] ?></option>
                                                                 
                                                             <?php } endforeach; ?>
                                                         </select>
@@ -96,7 +96,7 @@
                                                 <tr>
                                                     <td colspan="2">
                                                         <canvas id="canvas_<?=$groupProduk['id_group_produk']?>" style="display: none;"></canvas>
-                                                        <img id="resultImage_<?=$groupProduk['id_group_produk']?>" style="width:100%; height: auto;" src="<?= base_url($groupProduk['url'])?>">
+                                                        <img id="resultImage_<?=$groupProduk['id_group_produk']?>" style="width:100%; height: auto;" src="<?= base_url('assets/produk/' . $groupProduk['url'])?>">
                                                     </td>
                                                 </tr>
                                                 
