@@ -7,6 +7,7 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', 'Home::index');
 $routes->get('/detail/(:any)', 'Home::detail/$1');
+$routes->get('/produk_size_list_/(:any)', 'Home::produk_size_list_/$1');
 
 $routes->match(['get', 'post'], '/register', 'AuthController::register');
 $routes->match(['get', 'post'], '/login', 'AuthController::login');

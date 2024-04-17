@@ -80,7 +80,7 @@
                                 $kelas = strtolower($color['color_name']);
                                 $kelas = preg_replace('/\s+/', '', $kelas);
                         ?>
-                            <input url_image="<?=$color['url_image']?>" nama_warna="<?=$color['color_name']?>" type="radio" id="<?=$kelas?>" class="<?=$kelas?>" name="color" value="<?=$color['color']?>"><label for="<?=$kelas?>"></label>
+                            <input id_produk="<?=$color['id_produk']?>" url_image="<?=$color['url_image']?>" nama_warna="<?=$color['color_name']?>" type="radio" id="<?=$kelas?>" class="<?=$kelas?>" name="color" value="<?=$color['color']?>"><label for="<?=$kelas?>"></label>
                         <?php }?>
                             <!-- </form> -->
                         </div>
@@ -167,6 +167,20 @@
             var url_desain = '<?= base_url('assets/desain/') . $desain['url_desain'];?>';
 
             console.log(url_desain);
+
+            $.ajax({
+                url: '<?= base_url('produk_size_list_') ?>/' + $(this).attr('id_produk'), // URL endpoint untuk produk_size_list_ dengan parameter id_produk
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    // Memperbarui tampilan produk size menggunakan data yang diterima dari server
+                    // Misalnya, Anda dapat memperbarui daftar produk size di dalam HTML
+                    console.log(response); // Anda dapat menampilkan atau melakukan operasi lain dengan data yang diterima
+                },
+                error: function(xhr, status, error) {
+                    console.error(error); // Tangani kesalahan jika terjadi
+                }
+            });
 
             $('.warna').text('Warna : ' + selectedColor);            
             $('#resultImage').attr('src', url_image);

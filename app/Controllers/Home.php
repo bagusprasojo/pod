@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Models\DesainModel;
 use App\Models\DesainGPModel;
 use App\Models\ProdukModel;
+use App\Models\ProdukSizeModel;
 
 class Home extends BaseController
 {
@@ -39,6 +40,18 @@ class Home extends BaseController
         return view('index', ['desains' => $desains,'pager' => $pager ]);
     }
 
+    public function produk_size_list_($id_produk)
+    {
+        $produkSizeModel = new ProdukSizeModel();
+        $produkSizes = $produkSizeModel->select('id_produk_size, size, stock, harga')
+                                       ->where('id_produk',$id_produk)
+                                       ->where('produk_size_aktif',1)
+                                       ->orderby('urutan')
+                                       ->findAll();
+
+        return json_encode($produkSizes);
+    }
+
     public function detail($id_desain_gp){
         $desainGPModel = new DesainGPModel();
         $desain = $desainGPModel->select('m_desain_gp.*,b.nama as judul,b.deskripsi, b.url_desain, c.url_image, d.name')
@@ -49,10 +62,12 @@ class Home extends BaseController
                                ->first();
 
         $produkModel = new ProdukModel();
-        $colors = $produkModel->select('color,color_name,url_image')
+        $colors = $produkModel->select('color,color_name,url_image,id_produk')
                               ->Where('id_group_produk', $desain['id_group_produk'])
                               ->where('produk_aktif',1)
                               ->findAll();
+
+        
 
          // echo $desainGPModel->db->getLastQuery()->getQuery();
          // die();              
