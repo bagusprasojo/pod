@@ -17,8 +17,13 @@
     <?php } ?>
     
 
-    /* Hide default radio button */
-    input[type="radio"] {
+    /* Hide default radio button warna*/
+    input[type="radio"].radio_warna {
+        display: none;
+    }
+
+    /* Hide default radio button warna*/
+    input[type="radio"].radio_ukuran {
         display: none;
     }
 
@@ -26,18 +31,18 @@
     label {
         display: inline-block;
         cursor: pointer;
-        padding-left: 15px; /* Ruang untuk radio button yang disesuaikan */
+        padding-left: 10px; /* Ruang untuk radio button yang disesuaikan */
         position: relative;
-        margin-right: 10px;
+        margin-right: 40px;
     }
 
     /* Style untuk menandai radio button yang terpilih */
     input[type="radio"] + label::before {
         content: "";
         display: inline-block;
-        width: 20px;
+        width: 40px;
         height: 20px;
-        border-radius: 50%;
+        border-radius: 10%;
         border: 1px solid black;
         position: absolute;
         left: 0;
@@ -47,56 +52,83 @@
     input[type="radio"]:checked + label::before {
         content: "";
         display: inline-block;
-        width: 20px;
+        width: 40px;
         height: 20px;
-        border-radius: 50%;
+        border-radius: 10%;
         border: 3px solid black;
         position: absolute;
         left: 0;
         top: 0;
     }
+
+    /*.selected {
+        background-color: #f0f0f0; /* Atur warna latar belakang sesuai kebutuhan Anda */
+        border: 2px solid blue; /* Atur border sesuai kebutuhan Anda */
+    }*/
 </style>
     <section class="py-10">
         <div class="container px-4 px-lg-5 my-5">
             <div class="row justify-content-left">
-                <div class="col-sm-6">
+                <div class="col-sm-4">
                     <div class="card h-100">
                         <canvas id="canvas" style="display: none;"></canvas>
                         <img id="resultImage" class="resultImage" src="<?= base_url('assets/produk/' . $desain['url_image']) ?>" alt="..." />
                         
                     </div>
                 </div>
-                <div class="col-sm-6">                    
-                    <div>
-                        <p class="h3"><?= $desain['judul']; ?></p>
-                        <p>didesain oleh <strong><a href="#"><?= $desain['name']; ?></a></strong></p>
-                        <small class="text-muted"><?= $desain['deskripsi']; ?></small>
-                        <hr>
-                        <p class="h6 warna">Warna : </p>
+                <div class="col-sm-8">
+                    <form action="<?= site_url('order/add_cart') ?>" method="POST"> 
+                        <?= csrf_field() ?>   
+                        <input type="text" name="id_desain" value="<?= $desain['id_desain']; ?>">               
+                        
+                        <div class="row justify-content-left">
+                            <p class="h3"><?= $desain['judul']; ?></p>
+                                <p>didesain oleh <strong><a href="#"><?= $desain['name']; ?></a></strong></p>
+                                <small class="text-muted"><?= $desain['deskripsi']; ?></small>
+                                <hr>
+                                
+                            <div class="col-sm-6">
+                                <div><p class="h6 warna">Warna : </p></div>
 
-                        <div class="mb-4">
-                            <!-- <form> -->
-                        <?php foreach ($colors as $color) {
-                                $kelas = strtolower($color['color_name']);
-                                $kelas = preg_replace('/\s+/', '', $kelas);
-                        ?>
-                            <input id_produk="<?=$color['id_produk']?>" url_image="<?=$color['url_image']?>" nama_warna="<?=$color['color_name']?>" type="radio" id="<?=$kelas?>" class="<?=$kelas?>" name="color" value="<?=$color['color']?>"><label for="<?=$kelas?>"></label>
-                        <?php }?>
-                            <!-- </form> -->
+                                <div class="mb-4">
+                                    
+                                    <?php foreach ($colors as $color) {
+                                            $kelas = strtolower($color['color_name']);
+                                            $kelas = preg_replace('/\s+/', '', $kelas);
+                                            $id = "id_" . $kelas;
+                                            $kelas = 'radio_warna ' . $kelas;
+                                    ?>
+                                        <input id_produk="<?=$color['id_produk']?>" url_image="<?=$color['url_image']?>" nama_warna="<?=$color['color_name']?>" type="radio" id="<?=$id?>" class="<?=$kelas?>" name="id_produk" value="<?=$color['id_produk']?>">
+                                        <label class="label_warna" for="<?=$id?>"></label>
+                                    <?php }?>
+                                        
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div><p class="h6 mb-4">Ukuran : </p></div>
+                                <div class="ukuran" >
+                                    <!-- <input type="radio">XS</input> <div class="card col mx-1"></div>
+                                    <div class="card col mx-1">S</div>
+                                    <div class="card col mx-1">M</div>
+                                    <div class="card col mx-1">L</div>
+                                    <div class="card col mx-1">XL</div>
+                                    <div class="card col mx-1">XXL</div> -->
+                                </div>
+                            </div>
                         </div>
-                        <div><p class="h6">Ukuran : </p></div>
-                        <div class="container">
-                          <div class="row">
-                            <div class="card col mx-1">XS</div>
-                            <div class="card col mx-1">S</div>
-                            <div class="card col mx-1">M</div>
-                            <div class="card col mx-1">L</div>
-                            <div class="card col mx-1">XL</div>
-                            <div class="card col mx-1">XXL</div>
-                          </div>
+
+                        <div class="row justify-content-left">
+                            <hr>
+                            <div class="col-sm-6">
+                                <div class="row justify-content-left">
+                                    <div class="col-sm-6 harga"></div>
+                                    <div class="col-sm-6 stock"></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6"><button type="submit" id="btn_add_to_cart" class="btn btn-primary">Add To Cart</button></div>
                         </div>
-                    </div>
-                </div>
+                    </form>
+                </div>                
             </div>
         </div>
     </section>
@@ -161,7 +193,39 @@
     });
 
     $(document).ready(function() {        
-        $('input[type="radio"]').click(function() {
+        $(document).on('click', 'input.radio_ukuran[type="radio"]', function() {
+            $('.label_ukuran').removeClass('selected');
+
+            console.log($('.label_ukuran').removeClass(''));
+
+            // Menambahkan kelas 'selected' ke div ukuran yang sesuai dengan radio button yang dipilih
+            $(this).next().addClass('selected');
+
+            // Mengatur semua radio button dengan kelas 'radio_warna' ke unchecked
+            $('input.radio_ukuran[type="radio"]').prop('checked', false);
+
+            // Mengatur radio button yang dipilih menjadi checked
+            $(this).prop('checked', true);
+
+            var harga = parseInt($(this).attr('harga'));
+            var angkaDiformat = "Rp" + harga.toLocaleString('id-ID');
+            var p_harga = $("<p>").addClass("h4").text(angkaDiformat);
+            $(".harga").html(p_harga);
+
+            var stock = parseInt($(this).attr('stock'));
+            var p_stock = $("<p>").addClass("h4").text("Stock : " + $(this).attr('stock'));
+            $(".stock").html(p_stock);
+
+            if (stock > 0){
+                $("#btn_add_to_cart").show();    
+            } else {
+                $("#btn_add_to_cart").hide();
+            }
+            
+
+        });
+
+        $(document).on('click', 'input.radio_warna[type="radio"]', function() {
             var selectedColor = $(this).attr('nama_warna');
             var url_image = '<?= base_url('assets/produk/') ?>' + $(this).attr('url_image');
             var url_desain = '<?= base_url('assets/desain/') . $desain['url_desain'];?>';
@@ -173,9 +237,39 @@
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
-                    // Memperbarui tampilan produk size menggunakan data yang diterima dari server
-                    // Misalnya, Anda dapat memperbarui daftar produk size di dalam HTML
-                    console.log(response); // Anda dapat menampilkan atau melakukan operasi lain dengan data yang diterima
+                    console.log(response); 
+                    // Anda dapat menampilkan atau melakukan operasi lain 
+                    $('.ukuran').empty();
+                    $('.harga').empty();
+                    $('.stock').empty();
+
+                    // Menambahkan ukuran produk dari data JSON yang diterima
+                    $.each(response, function(index, product) {
+                        var radioId = 'ukuran_' + product.id_produk_size;
+                
+                        // Buat radio button dan label untuk setiap ukuran produk
+                        var radioInput = $('<input>').attr({
+                            type: 'radio',
+                            class: 'radio_ukuran',
+                            harga: product.harga,
+                            stock: product.stock,
+                            value: product.id_produk_size,
+                            name: 'id_produk_size',
+                            id: radioId
+                        });
+                        var label = $('<label>').attr({
+                            for: radioId,
+                            class:'label_ukuran'
+                        }).text(product.size);
+
+                        // Tambahkan radio button dan label ke dalam elemen '.ukuran'
+                        $('.ukuran').append(radioInput).append(label);
+
+                        $("#btn_add_to_cart").hide();
+
+
+                        
+                    });
                 },
                 error: function(xhr, status, error) {
                     console.error(error); // Tangani kesalahan jika terjadi

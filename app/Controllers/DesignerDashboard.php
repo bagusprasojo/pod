@@ -42,7 +42,7 @@ class DesignerDashboard extends BaseController
         $pager = '';
     }
 
-    private function add_produk_get(){
+    private function add_desain_get(){
         
         $groupProdukModel = new GroupProdukModel();
         $groupProduks = $groupProdukModel->findAll();
@@ -63,9 +63,9 @@ class DesignerDashboard extends BaseController
         echo "<img src='" . site_url('assets/desain/dawud.jpg') .  "' alt='Photo'>";
     }
 
-    public function add_produk(){
+    public function add_desain(){
         if (strtoupper($this->request->getMethod()) === 'GET') {
-            return $this->add_produk_get();
+            return $this->add_desain_get();
         } else {
             // var_dump($_POST);
             // die();
@@ -167,14 +167,14 @@ class DesignerDashboard extends BaseController
         ]);
     }
 
-    public function produk_list()
+    public function desain_list()
     {
-        return view('designer/produk_list', [
+        return view('designer/desain_list', [
             'userData' => $this->userData,
         ]);
     }
 
-    public function produk_list_()
+    public function desain_list_()
     {
         $desainModel    = new DesainModel();
         $button = "'" . '' . "'";

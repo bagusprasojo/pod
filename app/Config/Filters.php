@@ -74,6 +74,8 @@ class Filters extends BaseConfig
                 'designer_dashboard/*',
                 'user_dashboard',
                 'user_dashboard/*',
+                'order',
+                'order/*',
             ]
         ]
     ];

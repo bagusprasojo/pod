@@ -11,7 +11,7 @@
             ?>
             <div class="col-md-9" >
                 <div class="mb-3">
-                    <a class="btn btn-primary" href="<?php echo base_url('/designer_dashboard/add_produk')?>" role="button">Add Desain</a>
+                    <a class="btn btn-primary" href="<?php echo base_url('/designer_dashboard/add_desain')?>" role="button">Add Desain</a>
                 </div>
                 <div class="card s-3 table-responsive">
                     <table id="desain-table" class="table dt-table-hover" >
@@ -44,7 +44,7 @@
                 processing: true,
                 serverSide: true,
                 
-                ajax: '<?= base_url('/designer_dashboard/produk_list_') ?>'
+                ajax: '<?= base_url('/designer_dashboard/desain_list_') ?>'
             });
         });
     </script>

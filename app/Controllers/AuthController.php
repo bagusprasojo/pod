@@ -8,7 +8,14 @@ class AuthController extends BaseController
 {
     public function login(){
         if ($this->request->getMethod() === 'get') {
-            return view('login');
+            $session = session();
+            if (empty($session->get('user_id'))){
+                return view('login');    
+            } else {
+                return redirect()->to('/');
+            }
+
+            
         }
 
         $login = esc($this->request->getPost('login')); // Mengambil inputan dari form (username atau email)
@@ -22,6 +29,7 @@ class AuthController extends BaseController
                         ->first();
 
         if ($user && password_verify($password, $user['password'])) {
+            $jml_order_cart = get_jml_order_cart();
             $session = session();
             $userData = [
                 'id_user' => $user['id_user'],
@@ -30,13 +38,15 @@ class AuthController extends BaseController
                 'name_designer' => $user['name_designer'],
                 'is_designer' => $user['is_designer'],
                 'isLoggedIn'=>'1',
+
                 // Tambahkan data lain yang Anda perlukan untuk sesi login
             ];
             $session->set($userData);
+            // set_jml_order_cart();
             // $session->set($userData);
 
             $previousURL = $session->get('previous_url');
-
+            
             return redirect()->to($previousURL ?? '/');
         } else {
             // Proses login gagal

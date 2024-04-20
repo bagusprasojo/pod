@@ -22,7 +22,7 @@
                     <button class="btn btn-outline-dark me-1" type="submit">
                         <i class="bi-cart-fill me-1"></i>
                         Cart
-                        <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                        <span class="badge bg-dark text-white ms-1 rounded-pill"><?= get_jml_order_cart();?></span>
                     </button>
                 </form>
                 <form class="d-flex">

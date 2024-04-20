@@ -4,15 +4,15 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class DesainModel extends Model
+class ProdukSizeModel extends Model
 {
-    protected $table = 'm_desain';
-    protected $primaryKey = 'id_desain';
-    protected $allowedFields = ['id_user', 'nama','tag','deskripsi','url_desain','desain_aktif','slug','status_aktif']; // Field yang diizinkan untuk diisi
+    protected $table = 'm_produk_size';
+    protected $primaryKey = 'id_produk_size';
+    protected $allowedFields = ['id_produk','size','stock','harga','produk_size_aktif','urutan']; // Field yang diizinkan untuk diisi
     protected $useAutoIncrement = true;
     
     // Aturan validasi, misalnya untuk pendaftaran pengguna
-
+    
     
     // Dates
     protected $useTimestamps = true;
@@ -26,7 +26,7 @@ class DesainModel extends Model
 
     // Callbacks
     protected $allowCallbacks = true;
-    protected $beforeInsert   = ['generateSlug'];
+    protected $beforeInsert   = [];
     protected $afterInsert    = [];
     protected $beforeUpdate   = [];
     protected $afterUpdate    = [];
@@ -34,12 +34,4 @@ class DesainModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
-
-    protected function generateSlug(array $data)
-    {
-        $slug = url_title($data['data']['nama'], '-', true) . '-' . date('YmdHis');
-        $data['data']['slug'] = $slug;
-
-        return $data;
-    }
 }
