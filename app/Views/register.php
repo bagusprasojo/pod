@@ -20,6 +20,7 @@
                 ?>
 
                 <form action="<?= site_url('register'); ?>" method="post">
+                    <?= csrf_field() ?>
                     <div class="mb-3">
                         <input type="text" name="username" class="form-control" placeholder="Username" value="<?= isset($_SESSION['old']['username']) ? $_SESSION['old']['username'] : '' ?>">
                     </div>

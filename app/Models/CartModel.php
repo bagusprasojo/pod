@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
+use Ramsey\Uuid\Uuid;
 
 class CartModel extends Model
 {
     protected $table = 'tb_cart';
     protected $primaryKey = 'id_cart';
-    protected $allowedFields = ['id_desain', 'id_produk','qty','id_user','id_produk_size']; // Field yang diizinkan untuk diisi
+    protected $allowedFields = ['id_desain', 'id_produk','qty','id_user','id_produk_size','uuid_cart',]; // Field yang diizinkan untuk diisi
     protected $useAutoIncrement = true;
     
     // Aturan validasi, misalnya untuk pendaftaran pengguna
@@ -26,7 +27,7 @@ class CartModel extends Model
 
     // Callbacks
     protected $allowCallbacks = true;
-    protected $beforeInsert   = [];
+    protected $beforeInsert   = ['generateUUID'];
     protected $afterInsert    = [];
     protected $beforeUpdate   = [];
     protected $afterUpdate    = [];
@@ -34,6 +35,15 @@ class CartModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    protected function generateUUID(array $data)
+    {
+        $uuid = Uuid::uuid4(); // Membuat UUID versi 4 (random)
+        
+        $data['data']['uuid_cart'] = $uuid->toString();
+
+        return $data;
+    }
     
 }
 

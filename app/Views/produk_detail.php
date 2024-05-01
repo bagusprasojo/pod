@@ -79,8 +79,8 @@
                 <div class="col-sm-8">
                     <form action="<?= site_url('order/add_cart') ?>" method="POST"> 
                         <?= csrf_field() ?>   
-                        <input type="text" name="id_desain" value="<?= $desain['id_desain']; ?>">               
-                        
+                        <input type="hidden" name="id_desain" value="<?= $desain['id_desain']; ?>">               
+                                                
                         <div class="row justify-content-left">
                             <p class="h3"><?= $desain['judul']; ?></p>
                                 <p>didesain oleh <strong><a href="#"><?= $desain['name']; ?></a></strong></p>
@@ -125,7 +125,7 @@
                                     <div class="col-sm-6 stock"></div>
                                 </div>
                             </div>
-                            <div class="col-sm-6"><button type="submit" id="btn_add_to_cart" class="btn btn-primary">Add To Cart</button></div>
+                            <div class="col-sm-6"><button type="submit" id="btn_add_to_cart" class="btn btn-primary">+ Keranjang</button></div>
                         </div>
                     </form>
                 </div>                

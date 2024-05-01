@@ -36,8 +36,8 @@ class Filters extends BaseConfig
      */
     public array $globals = [
         'before' => [
-            // 'honeypot',
-            'csrf',
+            // 'honeypot',            
+            'csrf' => ['except' => ['payment/callback']],
             // 'invalidchars',
         ],
         'after' => [
@@ -77,6 +77,6 @@ class Filters extends BaseConfig
                 'order',
                 'order/*',
             ]
-        ]
+        ],
     ];
 }

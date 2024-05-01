@@ -8,7 +8,7 @@ class UserModel extends Model
 {
     protected $table = 'm_user';
     protected $primaryKey = 'id_user';
-    protected $allowedFields = ['username', 'email', 'password','name','address','follower_count', 'following_count','is_designer','name_designer']; // Field yang diizinkan untuk diisi
+    protected $allowedFields = ['username', 'email', 'password','name','address','follower_count', 'following_count','is_designer','name_designer','uuid_user']; // Field yang diizinkan untuk diisi
     protected $useAutoIncrement = true;
     
     // Aturan validasi, misalnya untuk pendaftaran pengguna
@@ -24,8 +24,8 @@ class UserModel extends Model
 
     // Validation
     protected $validationRules = [
-        'username' => 'required|min_length[3]|max_length[20]|is_unique[users.username]',
-        'email' => 'required|valid_email|is_unique[users.email]',
+        'username' => 'required|min_length[3]|max_length[20]|is_unique[m_user.username]',
+        'email' => 'required|valid_email|is_unique[m_user.email]',
         'password' => 'required|min_length[8]',
         'name' => 'required',
         
@@ -73,7 +73,7 @@ class UserModel extends Model
 
     // Callbacks
     protected $allowCallbacks = true;
-    protected $beforeInsert   = [];
+    protected $beforeInsert   = ['generateUUID'];
     protected $afterInsert    = [];
     protected $beforeUpdate   = [];
     protected $afterUpdate    = [];
@@ -81,4 +81,13 @@ class UserModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    protected function generateUUID(array $data)
+    {
+        $uuid = Uuid::uuid4(); // Membuat UUID versi 4 (random)
+        
+        $data['data']['uuid_user'] = $uuid->toString();
+
+        return $data;
+    }
 }

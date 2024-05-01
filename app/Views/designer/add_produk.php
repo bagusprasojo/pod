@@ -10,7 +10,7 @@
                 include(APPPATH . 'Views/includes/_sidebar_designer.php');               
             ?>
             <div class="col-md-9">
-              <form enctype="multipart/form-data" method="POST" action="<?= base_url('designer_dashboard/add_produk') ?>"> 
+              <form enctype="multipart/form-data" method="POST" action="<?= base_url('designer_dashboard/add_desain') ?>"> 
                   <?= csrf_field() ?>           
                   <div class="card mb-3" id="profile">
                     <div class="card-body">

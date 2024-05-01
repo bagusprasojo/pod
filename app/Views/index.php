@@ -8,7 +8,9 @@
                     <div class="card h-100">
                         <!-- Product image-->
                         <canvas id="canvas_<?=$desain['id_desain']?>" style="display: none;"></canvas>
-                        <img id="resultImage_<?=$desain['id_desain']?>" class="card-img-top" src="<?= base_url('assets/produk/' . $desain['url_image']) ?>" alt="..." />
+                        <a href="<?=base_url('/detail/' . $desain['uuid_desain_gp'])?>">
+                            <img id="resultImage_<?=$desain['id_desain']?>" class="card-img-top" src="<?= base_url('assets/produk/' . $desain['url_image']) ?>" alt="..." />
+                        </a>
                         <!-- Product details-->
                         <div class="card-body p-4">
                             <div class="text-center">
@@ -16,13 +18,17 @@
                                 <!-- Product name-->
                                 <div class="text-secondary">by <?= $desain['user'] ?></div>
                                 <!-- Product price-->
-                                <div class="fw-bolder text-danger"><?= "Rp ".number_format($desain['harga'], 2); ?></div>
+                                <div class="fw-bolder text-danger"><?= uang($desain['harga_min']) . ' - ' . uang($desain['harga_max']); ?></div>
                                 
                             </div>
                         </div>
                         <!-- Product actions-->
                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="<?=base_url('/detail/' . $desain['id_desain_gp'])?>">View Detail</a></div>
+                            <div class="text-center">
+                                <a class="btn btn-outline-dark mt-auto" href="<?=base_url('/detail/' . $desain['uuid_desain_gp'])?>">View Detail</a>
+                                <a class="btn btn-outline-dark mt-auto" href="<?=base_url('/detail/' . $desain['uuid_desain_gp'])?>">Beli</a>
+
+                            </div>
                         </div>
                     </div>
                 </div>

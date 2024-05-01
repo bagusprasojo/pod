@@ -19,11 +19,11 @@
             
             <ul class="navbar-nav ms-auto">
                 <form class="d-flex">
-                    <button class="btn btn-outline-dark me-1" type="submit">
+                    <a class="btn btn-outline-dark me-1" href="<?= site_url('order/show_cart') ?>">
                         <i class="bi-cart-fill me-1"></i>
                         Cart
-                        <span class="badge bg-dark text-white ms-1 rounded-pill"><?= get_jml_order_cart();?></span>
-                    </button>
+                        <span id="span_jml_order" class="badge bg-dark text-white ms-1 rounded-pill"><?= get_jml_order_cart();?></span>
+                    </a>
                 </form>
                 <form class="d-flex">
                     <?php if (is_logged_in()) {?>

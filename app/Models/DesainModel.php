@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
+use Ramsey\Uuid\Uuid;
 
 class DesainModel extends Model
 {
@@ -34,6 +35,14 @@ class DesainModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    // Di dalam model DesainModel
+    public function getNamaDesainById($id_desain)
+    {
+        return $this->select('nama_desain')->where('id_desain', $id_desain)->first()['nama_desain'];
+    }
+
+    
 
     protected function generateSlug(array $data)
     {

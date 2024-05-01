@@ -15,7 +15,7 @@
                 <ul class="list-group list-group-flush">
                   <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                     <h6 class="mb-0"><i class="mr-2 fa-regular fa-file" aria-hidden="true"></i><a href="<?= site_url('designer_dashboard/desain_list') ?>">Desain</a></h6>
-                    <span class="text-secondary"><?= 1 ?></span>
+                    <span class="text-secondary"><?= get_jml_desain() ?></span>
                   </li>
                   <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                     <h6 class="mb-0"><i class="mr-2 fa-regular fa-comments" aria-hidden="true"></i>Comment In</h6>

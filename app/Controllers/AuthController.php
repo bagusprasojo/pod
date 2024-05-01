@@ -33,6 +33,7 @@ class AuthController extends BaseController
             $session = session();
             $userData = [
                 'id_user' => $user['id_user'],
+                'uuid_user' => $user['uuid_user'],
                 'username' => $user['username'],
                 'name' => $user['name'],
                 'name_designer' => $user['name_designer'],

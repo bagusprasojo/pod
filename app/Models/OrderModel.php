@@ -5,11 +5,11 @@ namespace App\Models;
 use CodeIgniter\Model;
 use Ramsey\Uuid\Uuid;
 
-class DesainGPModel extends Model
+class orderModel extends Model
 {
-    protected $table = 'm_desain_gp';
-    protected $primaryKey = 'id_desain_gp';
-    protected $allowedFields = ['id_desain','id_group_produk', 'url','color','desain_gp_aktif','uuid_desain_gp']; // Field yang diizinkan untuk diisi
+    protected $table = 'tb_order';
+    protected $primaryKey = 'id_order';
+    protected $allowedFields = ['id_user','id_ekspedisi','dpp', 'ppn','ongkir','total','status','uuid_order',]; // Field yang diizinkan untuk diisi
     protected $useAutoIncrement = true;
     
     // Aturan validasi, misalnya untuk pendaftaran pengguna
@@ -40,10 +40,11 @@ class DesainGPModel extends Model
     {
         $uuid = Uuid::uuid4(); // Membuat UUID versi 4 (random)
         
-        $data['data']['uuid_desain_gp'] = $uuid->toString();
+        $data['data']['uuid_order'] = $uuid->toString();
 
         return $data;
     }
-
     
 }
+
+

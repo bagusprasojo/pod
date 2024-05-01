@@ -34,4 +34,11 @@ class ProdukSizeModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    // Di dalam model ProdukSizeModel
+    public function getSizeById($id_produk_size)
+    {
+        return $this->select('size')->where('id_produk_size', $id_produk_size)->first()['size'];
+    }
+
 }
