@@ -7,11 +7,11 @@ use App\Models\DesainGPModel;
 use App\Models\ProdukModel;
 use App\Models\ProdukSizeModel;
 
-class Home extends BaseController
+class Shop extends BaseController
 {
-    public function index(): string
+    public function shop($id_group_produk): string
     {
-        $id_group_produk = 1;
+        // $id_group_produk = 1;
 
         $nilai_search = '';
         if (isset($_GET['search'])) {
@@ -30,6 +30,9 @@ class Home extends BaseController
                                ->groupBy('m_desain.id_desain, m_desain.slug, d.name, m_desain.nama, c.url_image, c.color, url_desain, b.id_group_produk, b.id_desain_gp, b.uuid_desain_gp') 
                                ->paginate(6);
 
+        // echo $desainModel->db->getLastQuery()->getQuery();
+         // die();              
+
         $pager = $desainModel->pager;
 
         // foreach ($desains as $desain) {
@@ -39,7 +42,7 @@ class Home extends BaseController
         // echo $desainModel->db->getLastQuery()->getQuery();
         // die();
 
-        return view('index', ['desains' => $desains,'pager' => $pager ]);
+        return view('shop', ['desains' => $desains,'pager' => $pager ]);
     }
 
     public function produk_size_list_($id_produk)
@@ -56,7 +59,7 @@ class Home extends BaseController
 
     public function detail($uuid_desain_gp){
         $desainGPModel = new DesainGPModel();
-        $desain = $desainGPModel->select('m_desain_gp.*,b.nama as judul,b.deskripsi, b.url_desain, c.url_image, d.name, c.color')
+        $desain = $desainGPModel->select('m_desain_gp.*,b.nama as judul,b.deskripsi, b.url_desain, c.url_image, d.name')
                                ->where('uuid_desain_gp',$uuid_desain_gp)
                                ->join('m_desain b', 'b.id_desain = m_desain_gp.id_desain')
                                ->join('m_produk c', 'm_desain_gp.id_group_produk = c.id_group_produk and m_desain_gp.color = c.color')
@@ -71,8 +74,7 @@ class Home extends BaseController
 
         
 
-         // echo $desainGPModel->db->getLastQuery()->getQuery();
-         // die();              
+         
 
         return view('produk_detail', ['desain' => $desain,'colors'=>$colors, ]);
 

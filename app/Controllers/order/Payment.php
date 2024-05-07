@@ -40,7 +40,7 @@ class Payment extends BaseController
 			$lanjut = true;
 
 			if ($transaction_status == 'settlement' && $status_code == 200){
-				$status_pesanan = 'Selesai';				
+				$status_pesanan = 'Terbayar';				
 			} else if ($transaction_status == 'pending' && $status_code == 201){
 				$status_pesanan = 'Menunggu Pembayaran';
 				$uuid_order = $data['order_id'];

@@ -2,6 +2,7 @@
 
 use App\Models\CartModel;
 use App\Models\DesainModel;
+use App\Models\GroupProdukModel;
 
 if (!function_exists('get_jml_order_cart')) {
     function get_jml_order_cart()
@@ -20,6 +21,19 @@ if (!function_exists('get_jml_order_cart')) {
 
         // Jika user belum login, kembalikan 0
         return 0;
+    }
+}
+
+if (!function_exists('get_group_produk')) {
+    function get_group_produk()
+    {
+        $groupProdukModel = new GroupProdukModel();
+        $groupProduks = $groupProdukModel->select('*')
+                                         ->where('group_produk_aktif',1)
+                                         ->findAll();
+
+        return $groupProduks;
+
     }
 }
 

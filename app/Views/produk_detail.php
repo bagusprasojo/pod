@@ -72,8 +72,7 @@
                 <div class="col-sm-4">
                     <div class="card h-100">
                         <canvas id="canvas" style="display: none;"></canvas>
-                        <img id="resultImage" class="resultImage" src="<?= base_url('assets/produk/' . $desain['url_image']) ?>" alt="..." />
-                        
+                        <img id="resultImage" class="resultImage" src="<?= base_url('assets/produk/' . $desain['url_image']) ?>" alt="..." />                        
                     </div>
                 </div>
                 <div class="col-sm-8">
@@ -87,7 +86,7 @@
                                 <small class="text-muted"><?= $desain['deskripsi']; ?></small>
                                 <hr>
                                 
-                            <div class="col-sm-6">
+                            <div class="col-sm-8">
                                 <div><p class="h6 warna">Warna : </p></div>
 
                                 <div class="mb-4">
@@ -97,14 +96,20 @@
                                             $kelas = preg_replace('/\s+/', '', $kelas);
                                             $id = "id_" . $kelas;
                                             $kelas = 'radio_warna ' . $kelas;
+                                            
+                                            $checked = "";
+                                            if($color['color'] == $desain['color']){
+                                                $checked = "checked";
+                                            }
+
                                     ?>
-                                        <input id_produk="<?=$color['id_produk']?>" url_image="<?=$color['url_image']?>" nama_warna="<?=$color['color_name']?>" type="radio" id="<?=$id?>" class="<?=$kelas?>" name="id_produk" value="<?=$color['id_produk']?>">
+                                        <input <?= $checked ?> id_produk="<?=$color['id_produk']?>" url_image="<?=$color['url_image']?>" nama_warna="<?=$color['color_name']?>" type="radio" id="<?=$id?>" class="<?=$kelas?>" name="id_produk" value="<?=$color['id_produk']?>">
                                         <label class="label_warna" for="<?=$id?>"></label>
                                     <?php }?>
                                         
                                 </div>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-sm-4">
                                 <div><p class="h6 mb-4">Ukuran : </p></div>
                                 <div class="ukuran" >
                                     <!-- <input type="radio">XS</input> <div class="card col mx-1"></div>
@@ -281,6 +286,8 @@
 
             mergeImage(url_image, url_desain);
         });
+
+        $('input.radio_warna:checked').trigger('click');
     });
 
 </script>
