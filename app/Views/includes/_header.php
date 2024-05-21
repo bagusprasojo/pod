@@ -16,9 +16,8 @@
     }
 </style>
 
-<section >
-    <div class="mt-1 container px-lg-5">
-        <div class="col col-cm-12" style="display: flex; justify-content: center;">        
+<header class="py-2" style="background-color: #e3f2fd;">
+    <div style="display: flex; justify-content: center;">        
             <?php 
             $group_produks = get_group_produk();
             foreach ($group_produks as $group_produk) {
@@ -28,7 +27,5 @@
             }
         ?>
         </div>
-            
-        
-    </div>
-</section>
+</header>
+

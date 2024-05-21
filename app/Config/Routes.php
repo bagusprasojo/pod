@@ -15,16 +15,22 @@ $routes->match(['get', 'post'], '/register', 'AuthController::register');
 $routes->match(['get', 'post'], '/login', 'AuthController::login');
 $routes->match(['get', 'post'], '/logout', 'AuthController::logout');
 
-$routes->get('/user_dashboard', 'UserDashboard::index');
+#------------------------- User -------------------------#
+$routes->get('/user_dashboard', 'user\UserDashboard::index');
+$routes->get('/user_dashboard/transaksi', 'user\UserDashboard::transaksi');
+
+#------------------------- Designer -------------------------# 
 $routes->get('/designer_dashboard', 'designer\DesignerDashboard::index');
 
 $routes->match(['get', 'post'], '/designer_dashboard/add_desain', 'designer\DesignerDashboard::add_desain');
 $routes->match(['get', 'post'], '/designer_dashboard/desain_list', 'designer\DesignerDashboard::desain_list');
 $routes->match(['get', 'post'], '/designer_dashboard/desain_list_', 'designer\DesignerDashboard::desain_list_');
 
+#------------------------- XXXXX -------------------------#
 $routes->get('assets/desain/(:any)', 'Assets::desain/$1');
 $routes->get('assets/produk/(:any)', 'Assets::produk/$1');
 
+#------------------------- Order -------------------------#
 $routes->match(['get', 'post'],'/order/payment_success', 'order\Order::payment_success');
 $routes->match(['get', 'post'],'/order/pengiriman', 'order\Order::pengiriman');
 

@@ -9,7 +9,7 @@ class orderModel extends Model
 {
     protected $table = 'tb_order';
     protected $primaryKey = 'id_order';
-    protected $allowedFields = ['id_user','id_ekspedisi','dpp', 'ppn','ongkir','total','status','uuid_order',]; // Field yang diizinkan untuk diisi
+    protected $allowedFields = ['tgl_order','id_user','id_ekspedisi','dpp', 'ppn','ongkir','total','status','uuid_order',]; // Field yang diizinkan untuk diisi
     protected $useAutoIncrement = true;
     
     // Aturan validasi, misalnya untuk pendaftaran pengguna

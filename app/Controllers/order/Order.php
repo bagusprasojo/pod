@@ -153,14 +153,16 @@ class Order extends BaseController
 
 		if ($order){
 			$ekspedisiModel = new EkspedisiModel();
-	    	$ekspedisi = $ekspedisiModel->select('tarif')
+	    	$ekspedisi = $ekspedisiModel->select('tarif,id_ekspedisi')
 	    								->Where(['uuid_ekspedisi' => $uuid_ekspedisi])->first();
 
 	    	if ($ekspedisi) {
 	    		$ongkir = intVal($ekspedisi['tarif']);	
 	    		$total  = $order['dpp'] + $order['ppn']	+ $ongkir;		
 	    		
-	    		$orderModel->update($order['id_order'], ['ongkir' => $ongkir,'total'=>$total]);
+	    		$orderModel->update($order['id_order'], ['ongkir' => $ongkir,
+	    												 'total'=>$total, 
+	    												 'id_ekspedisi'=>$ekspedisi['id_ekspedisi']]);
 
 	    		$data = [
 			        'status' => true,
@@ -277,7 +279,7 @@ class Order extends BaseController
 													->where('ekspedisi_aktif',1)
 													->findAll();
 
-		$id_order = $this->checkout();
+		$id_order = $this->checkout(null);
 		$orderModel = new OrderModel();
 		$order = $orderModel->select('*')->where('id_order', $id_order)
 		 								 ->first();		 								 
@@ -352,7 +354,7 @@ class Order extends BaseController
 		echo json_encode($data);
 	}
 	
-	public function checkout(){
+	public function checkout($uuid_ekspedisi){
 
 		$db = db_connect();
         $db->transBegin();
@@ -386,6 +388,10 @@ class Order extends BaseController
 	    	$total = intVal($data_summary['total']);
 
             // Simpan order
+
+            $tgl_order   = new \DateTime();
+            $tgl_order = $tgl_order->format('Y-m-d H:i:s');
+
             $orderModel = new OrderModel();
             $orderData = [
                 'id_user' => $this->user['id_user'],
@@ -394,6 +400,7 @@ class Order extends BaseController
                 // 'ongkir'=>$ongkir,
                 'total' => $total,
                 'status' => 'Dibuat',
+                'tgl_order' => $tgl_order,
                 // 'id_ekspedisi'=>$ekspedisi['id_ekspedisi'],                
             ];
 
