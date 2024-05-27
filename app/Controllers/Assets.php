@@ -38,4 +38,20 @@ class Assets extends Controller
 
         throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
     }
+
+    public function image_cart($file)
+    {
+        $filepath = ROOTPATH . 'assets/cart/' . $file;
+        
+        if (file_exists($filepath) && is_file($filepath)) {
+            $gambar = file_get_contents($filepath);
+
+            return $this->response
+                ->setStatusCode(200)
+                ->setContentType(mime_content_type($filepath))
+                ->setBody($gambar);
+        }
+
+        throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+    }
 }

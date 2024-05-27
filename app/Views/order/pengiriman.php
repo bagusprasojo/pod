@@ -263,37 +263,37 @@
 	});
 
 	$(document).ready(function(){
-    $('#opt_ekspedisi').change(function(){
-    	var uuid_ekspedisi = $('option:selected', this).attr('uuid_ekspedisi');
-	        
-        $.ajax({
-        	url: '<?= base_url('/order/get_ongkir') ?>/<?= $uuid_order ?>/' + uuid_ekspedisi,
-	        type: 'GET',
-	        dataType: 'json',
-	        success: function(response) {
-	        	console.log(response);
-	        	if (response['status']) {	        		
-	        		IsiSummaryData(response);
-	        		$('#button_order').attr('href', '<?= base_url('/order/checkout/') ?>' + uuid_ekspedisi);
-	            } else {
-	            	Swal.fire({
-	                    icon: 'warning',
-	                    title: 'Oops...',
-	                    text: response['pesan'],
-	                    confirmButtonColor: '#3085d6',
-	                    cancelButtonColor: '#d33',
-	                    confirmButtonText: 'OK'
-	                });
-	            	
-	            }
-	            
-	        },
-	        error: function(xhr, status, error) {
-	            console.error(error);
-	        }
+	    $('#opt_ekspedisi').change(function(){
+	    	var uuid_ekspedisi = $('option:selected', this).attr('uuid_ekspedisi');
+		        
+	        $.ajax({
+	        	url: '<?= base_url('/order/get_ongkir') ?>/<?= $uuid_order ?>/' + uuid_ekspedisi,
+		        type: 'GET',
+		        dataType: 'json',
+		        success: function(response) {
+		        	console.log(response);
+		        	if (response['status']) {	        		
+		        		IsiSummaryData(response);
+		        		$('#button_order').attr('href', '<?= base_url('/order/checkout/') ?>' + uuid_ekspedisi);
+		            } else {
+		            	Swal.fire({
+		                    icon: 'warning',
+		                    title: 'Oops...',
+		                    text: response['pesan'],
+		                    confirmButtonColor: '#3085d6',
+		                    cancelButtonColor: '#d33',
+		                    confirmButtonText: 'OK'
+		                });
+		            	
+		            }
+		            
+		        },
+		        error: function(xhr, status, error) {
+		            console.error(error);
+		        }
+		    });
 	    });
-    });
-});
+	});
 
     
 </script>

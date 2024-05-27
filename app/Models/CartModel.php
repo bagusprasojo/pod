@@ -9,7 +9,7 @@ class CartModel extends Model
 {
     protected $table = 'tb_cart';
     protected $primaryKey = 'id_cart';
-    protected $allowedFields = ['id_desain', 'id_produk','qty','id_user','id_produk_size','uuid_cart',]; // Field yang diizinkan untuk diisi
+    protected $allowedFields = ['id_desain', 'id_produk','qty','id_user','id_produk_size','uuid_cart','url_image']; // Field yang diizinkan untuk diisi
     protected $useAutoIncrement = true;
     
     // Aturan validasi, misalnya untuk pendaftaran pengguna

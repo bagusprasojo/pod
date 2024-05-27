@@ -5,6 +5,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap" rel="stylesheet">
+
         <title>Shop Homepage - Start Bootstrap Template</title>
 
         <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
@@ -56,6 +61,23 @@
                 background-color: #03759e !important;
                 border-color: #03759e;
                 box-shadow: 0 10px 20px -10px#03759e;
+            }
+
+            .detail-first-line {
+              font-optical-sizing: auto;
+              font-weight:important;
+              font-style:bold;
+              font-variation-settings:"wdth" 100;
+              font-size: 20px;
+            }
+
+            .detail-second-line {
+              font-family: "Inconsolata", monospace;
+              font-optical-sizing: auto;
+              font-weight:!important;
+              font-style: italic;
+              font-variation-settings:"wdth" 100;
+              font-size: 14px;
             }
 
         </style>

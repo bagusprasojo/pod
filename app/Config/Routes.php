@@ -18,6 +18,7 @@ $routes->match(['get', 'post'], '/logout', 'AuthController::logout');
 #------------------------- User -------------------------#
 $routes->get('/user_dashboard', 'user\UserDashboard::index');
 $routes->get('/user_dashboard/transaksi', 'user\UserDashboard::transaksi');
+$routes->get('/user_dashboard/transaksi/(:any)', 'user\UserDashboard::transaksi_detail/$1');
 
 #------------------------- Designer -------------------------# 
 $routes->get('/designer_dashboard', 'designer\DesignerDashboard::index');
@@ -29,6 +30,7 @@ $routes->match(['get', 'post'], '/designer_dashboard/desain_list_', 'designer\De
 #------------------------- XXXXX -------------------------#
 $routes->get('assets/desain/(:any)', 'Assets::desain/$1');
 $routes->get('assets/produk/(:any)', 'Assets::produk/$1');
+$routes->get('assets/image_cart/(:any)', 'Assets::image_cart/$1');
 
 #------------------------- Order -------------------------#
 $routes->match(['get', 'post'],'/order/payment_success', 'order\Order::payment_success');

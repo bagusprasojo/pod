@@ -76,15 +76,16 @@
                     </div>
                 </div>
                 <div class="col-sm-8">
-                    <form action="<?= site_url('order/add_cart') ?>" method="POST"> 
+                    <form action="<?= site_url('order/add_cart') ?>" method="POST" enctype="multipart/form-data"  id="orderForm"> 
                         <?= csrf_field() ?>   
-                        <input type="hidden" name="id_desain" value="<?= $desain['id_desain']; ?>">               
-                                                
+                        <input type="hidden" name="id_desain" value="<?= $desain['id_desain']; ?>">
+
                         <div class="row justify-content-left">
                             <p class="h3"><?= $desain['judul']; ?></p>
                                 <p>didesain oleh <strong><a href="#"><?= $desain['name']; ?></a></strong></p>
                                 <small class="text-muted"><?= $desain['deskripsi']; ?></small>
                                 <hr>
+                                <!-- <input type="file" name="image" class="form-control mb-3" id="image_hasil_akhir"> -->
                                 
                             <div class="col-sm-8">
                                 <div><p class="h6 warna">Warna : </p></div>
@@ -178,6 +179,9 @@
 
                 resultImage.src = mergedImage.src;
                 resultImage.style.display = "block";
+
+                // console.log('Hasil : ');
+                // console.log(resultImage.src);
             };
 
 
@@ -185,7 +189,9 @@
             
         };
 
-        imgProduk.src = imgProdukSrc;
+        imgProduk.src = imgProdukSrc;        
+
+
     }
 
     document.addEventListener("DOMContentLoaded", function() {
@@ -288,6 +294,41 @@
         });
 
         $('input.radio_warna:checked').trigger('click');
+    });
+
+    $('#orderForm').submit(function(event) {
+        event.preventDefault(); // Mencegah submit form default
+
+        var formData = new FormData(this);        
+        var canvas = document.getElementById('canvas');
+        canvas.toBlob(function(blob) {
+            formData.append('image', blob, 'hasil_akhir.png');
+
+            console.log(blob);
+
+            // Kirim data form dengan Ajax
+            $.ajax({
+                url: '<?= site_url('order/add_cart') ?>',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    console.log(response);
+                    window.history.back(); 
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Oops...',
+                        text: response['pesan'],
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            });
+        }, 'image/png');
     });
 
 </script>

@@ -31,7 +31,52 @@
         background-color: lightcoral; /* Warna latar belakang saat hover */
         border-radius: 25px 25px 25px 25px;
     }
+
+
 </style>
+
+<div class="modal fade" id="popupModal" tabindex="-1" role="dialog" aria-labelledby="popupModalLabel" aria-hidden="true">
+    <div class="modal-lg modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-body p-1">
+                <button type="button" id="close" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span> 
+                </button><span class="h5 mx-1">Detail Transaksi</span>
+                <div class="col-md mt-2 px-2">
+                    <div class="row">
+                      <p class="h6">Detail Produk</p>                    
+                      <div class="col-md card mx-2" >
+                        <div class="row">
+                          <div class="col-sm-2">
+                            <p class="h6">Tanggal</p>                           
+                          </div>
+                          <div class="col-sm-2">
+                            <p class="h6">Status</p>                              
+                          </div>
+                          <div class="col-sm-3">
+                            <p class="h6">Ekspedisi</p>                              
+                          </div>
+                          <div class="col-sm-2">
+                            <p class="h6">Total</p>                              
+                          </div>
+                          <div class="col-sm-3">
+                            A
+                          </div>               
+                        </div>
+                        <div class="row" id="order_detail">
+                          XX
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">BB</div>
+
+                  
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="col-md-9">
   <div class="card mb-3" id="profile">
@@ -91,29 +136,31 @@
                 <?= uang($order['total']) ?>
               </div>
               <div class="col-sm-3">
-                <a class="btn btn-sm btn-primary">Detail</a>
+                <a class="btn btn-sm btn-primary btn_detail" uuid_order="<?= $order['uuid_order'] ?>">Detail</a>
                 <a class="btn btn-sm btn-primary">History</a>
               </div>               
             </div>
 
+            <?php if ($orderDetails) { ?>
             <?php foreach ($orderDetails as $detail) { ?>
             <?php  if ($order['id_order'] == $detail['id_order']) { ?>
               
             
               <div class="row mt-2">
                 <div class="col-sm-2">
-                  Gambar
+                  <canvas id="canvas_<?=$detail['id_order_detail']?>" style="display: none;"></canvas>
+                  <img width="60px" id="resultImage_<?=$detail['id_order_detail']?>" class="resultImage" src="<?= base_url('assets/image_cart/' . $detail['url_image']) ?>" alt="..." />
                 </div>
                 <div class="col-sm-10">
                   <div class="row">
-                    <p class="h6"><?= $detail['nama_group_produk'] . '-' . $detail['nama_desain'] . '-' . $detail['color_name']. '-' . $detail['size']?></p>
-                    <?= $detail['qty'] . ' barang x ' . $detail['harga']?>
+                    <span class="h6"><?= $detail['nama_group_produk'] . '-' . $detail['nama_desain'] . '-' . $detail['color_name']. '-' . $detail['size']?></span>
+                    <span class="detail-second-line"><?= $detail['qty'] . ' barang x ' . $detail['harga']?></span>
 
                   </div>
 
                 </div>
               </div>
-            <?php }} ?>
+            <?php }}} ?>
 
           </div>
         </div>
@@ -207,6 +254,58 @@
             //         // Tangani kesalahan AJAX
             //     }
             // });
+        });
+
+        function displayOrderDetails(orderDetails) {
+          var container = $('#order_detail');
+          container.empty(); // Kosongkan kontainer sebelum menambahkan elemen baru
+
+          // alert(orderDetails);
+
+
+          orderDetails.forEach(function(detail) {
+              var itemHtml = `
+                  <div class="col-sm-2">
+                    ${detail.nama_desain}
+                  </div>
+                  <div class="col-sm-2">
+                    ${detail.nama_group_produk}
+                  </div>
+                  <div class="col-sm-3">
+                    ${detail.qty}
+                  </div>
+                  <div class="col-sm-2">
+                    ${detail.color_name}
+                  </div>
+                  <div class="col-sm-3">                    
+                    ${detail.harga}
+                  </div>               
+                  
+              `;
+              container.append(itemHtml);
+          });
+        }
+
+        $('.btn_detail').click(function(event) {
+            event.preventDefault(); // Mencegah aksi default dari link yang diklik
+
+            $.ajax({
+                url: '<?= site_url("/user_dashboard/transaksi/") ?>' + $(this).attr('uuid_order'),
+                method: 'GET',                
+                success: function(response) {     
+                    var data = JSON.parse(response);
+                    
+                    displayOrderDetails(data.order.order_details);            
+                    $('#popupModal').modal('show');
+                },
+                error: function(xhr, status, error) {
+                    alert('Gagal')
+                }
+            });
+        });
+
+        $('#close').click(function() {
+            $('#popupModal').modal('hide');
         });
     });
 

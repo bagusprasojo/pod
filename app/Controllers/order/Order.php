@@ -45,7 +45,7 @@ class Order extends BaseController
         $pager = '';
     }
 
-    private function simpan_cart($id_desain, $id_produk, $id_produk_size){
+    private function simpan_cart($id_desain, $id_produk, $id_produk_size, $url_image){
     	$cartModel = new CartModel();
     	$existingCart = $cartModel->where([
 																    'id_desain' => $id_desain,
@@ -62,6 +62,7 @@ class Order extends BaseController
 	            'id_produk' => $id_produk,
 	            'id_produk_size' => $id_produk_size,
 	            'qty' => 1,
+	            'url_image' => $url_image,
 	        ];
 
 	        $result = $cartModel->insert($cartData);
@@ -84,16 +85,49 @@ class Order extends BaseController
 			    $result = $this->simpan_cart($id_desain, $id_produk, $id_produk_size);
     		}    	
     	} else {
-		    	$id_desain = esc($this->request->getPost('id_desain'));
+			$gambar = $this->request->getFile('image');
+            $path = ROOTPATH . 'assets/cart/';
+            $newName = '';
+
+            $newName = $gambar->getRandomName();
+            if ($gambar->isValid() && !$gambar->hasMoved())
+            {
+                $newName = $gambar->getRandomName();                
+                $gambar->move($path, $newName);
+
+                $id_desain = esc($this->request->getPost('id_desain'));
 			    $id_produk = esc($this->request->getPost('id_produk'));
 			    $id_produk_size = esc($this->request->getPost('id_produk_size'));
 
-			    $result = $this->simpan_cart($id_desain, $id_produk, $id_produk_size);
-			}
+			    
 
-			if ($result){
-				return redirect()->to('/order/show_cart');
-			}
+			    $result = $this->simpan_cart($id_desain, $id_produk, $id_produk_size, $newName);
+			    if ($result){
+			    	$data = [
+				        'status' => true,
+				        'pesan' => 'Berhasil simpan ke keranjang',					        
+				    ];
+			    } else {
+			    	$data = [
+				        'status' => false,
+				        'pesan' => 'Gagal simpan ke keranjang',					        
+				    ];
+			    }
+
+            
+            } else{
+                // File tidak valid, tampilkan pesan error
+                $error = $gambar->getError();
+                $data = [
+			        'status' => false,
+			        'pesan' => $error,				        
+			    ];
+                
+            }	    	
+
+		    echo json_encode($data);
+		}
+			
     }
 
     public function get_data_summary_order(){
@@ -373,7 +407,7 @@ class Order extends BaseController
         	// }
 
         	$cartModel = new CartModel();
-            $data_carts = $cartModel->select('b.nama as desain,b.id_desain,c.id_produk, b.url_desain, d.`name` as group_produk, c.color, c.color_name, c.url_image, e.size, e.harga, tb_cart.qty, tb_cart.uuid_cart, tb_cart.id_produk_size, tb_cart.id_cart')
+            $data_carts = $cartModel->select('b.nama as desain,b.id_desain,c.id_produk, b.url_desain, d.`name` as group_produk, c.color, c.color_name, c.url_image, e.size, e.harga, tb_cart.qty, tb_cart.uuid_cart, tb_cart.id_produk_size, tb_cart.id_cart, tb_cart.url_image')
     	                       ->join('m_desain b ', 'tb_cart.id_desain = b.id_desain')
     	                       ->join('m_produk c ', 'tb_cart.id_produk = c.id_produk')
     	                       ->join('m_group_produk d ', 'c.id_group_produk = d.id_group_produk')
@@ -422,6 +456,7 @@ class Order extends BaseController
                     'id_produk_size' => $data_cart['id_produk_size'],
                     'size' => $data_cart['size'],
                     'id_order' => $id_order,
+                    'url_image' => $data_cart['url_image'],
                 ];
                 
                 $orderDetailModel->insert($orderDetailData);

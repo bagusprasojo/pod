@@ -56,17 +56,38 @@ class UserDashboard extends BaseController
         ]);
     }
 
-    private function getOrderDetails($orders){
-        $id_orders = [];
-
-        foreach ($orders as $order) {
-            $id_orders[] = $order['id_order'];
-        }
+    private function getOrderDetailByIDOrder($id_order){        
 
         $orderModelDetail    = new OrderDetailModel();    
 
 
-        $orderDetails = $orderModelDetail->select('tb_order_detail.*')
+        $orderDetails = $orderModelDetail->select('tb_order_detail.*, b.url_image as produk_image')
+                                         ->join('m_produk b','tb_order_detail.id_produk = b.id_produk')
+                                         ->where('id_order', $id_order)->findAll();
+
+        return $orderDetails;
+
+    }
+
+    private function getOrderDetails($orders){
+        if (!$orders){
+            return;    
+        }
+
+        $id_orders = [];
+        foreach ($orders as $order) {
+            $id_orders[] = $order['id_order'];
+        }
+
+        // var_dump($id_orders);
+        // die();
+
+        $orderModelDetail    = new OrderDetailModel();    
+
+
+        $orderDetails = $orderModelDetail->select('tb_order_detail.*, b.url_image as produk_image')
+                                         ->join('m_produk b','tb_order_detail.id_produk = b.id_produk')
+                                         // ->join('m_group_produk c','b.id_group_produk = c.id_group_produk')
                                          ->whereIn('id_order', $id_orders)->findAll();
 
         return $orderDetails;
@@ -89,7 +110,7 @@ class UserDashboard extends BaseController
 
         
 
-        $orderModel->distinct()->select('tb_order.id_order,date(tb_order.tgl_order) as tgl_order,tb_order.status,tb_order.total, b.nama as ekspedisi')
+        $orderModel->distinct()->select('tb_order.id_order,tb_order.uuid_order,date(tb_order.tgl_order) as tgl_order,tb_order.status,tb_order.total, b.nama as ekspedisi')
                                ->join('m_ekspedisi b','tb_order.id_ekspedisi = b.id_ekspedisi')
                                ->join('tb_order_detail c', 'tb_order.id_order = c.id_order ')
                                ->orderby('tb_order.tgl_order desc');
@@ -115,6 +136,73 @@ class UserDashboard extends BaseController
 
         return $orderModel;
 
+    }
+
+    private function getOrderByUUIDOrder($uuid_order) {
+        $orderModel = new OrderModel();
+        $orderModel->distinct()->select('tb_order.id_order,tb_order.uuid_order,date(tb_order.tgl_order) as tgl_order,tb_order.status,tb_order.dpp,tb_order.ppn,tb_order.total, tb_order.ongkir,tb_order.status, b.nama as ekspedisi')
+                               ->join('m_ekspedisi b','tb_order.id_ekspedisi = b.id_ekspedisi')
+                               ->join('tb_order_detail c', 'tb_order.id_order = c.id_order ')
+                               ->where('tb_order.uuid_order', $uuid_order)
+                               ->orderby('tb_order.tgl_order desc');
+
+        return $orderModel->first();        
+
+    }
+
+    public function transaksi_detail($uuid_order)
+    {
+        $order = $this->getOrderByUUIDOrder($uuid_order);
+        if ($order){
+            $order_details = $this->getOrderDetailByIDOrder($order['id_order']);
+
+            $details = [];
+            foreach ($order_details as $order_detail) {
+                $detail = [
+                    'nama_desain' => $order_detail['nama_desain'],
+                    'nama_group_produk' => $order_detail['nama_group_produk'],
+                    'qty'=>$order_detail['qty'],
+                    'color_name'=>$order_detail['color_name'],
+                    'harga'=>$order_detail['harga'],
+                    'size'=>$order_detail['size'],
+                    'url_image'=>$order_detail['url_image'],
+
+                ];
+
+                $details[] = $detail;
+            }
+
+
+            $order_data = [
+                'id_order'=> $order['id_order'],
+                'tgl_order'=> $order['tgl_order'],
+                'dpp'=> $order['dpp'],
+                'ppn'=> $order['ppn'],
+                'ongkir'=> $order['ongkir'],
+                'total'=> $order['total'],
+                'status'=> $order['status'],
+                'order_details' => $details,
+            ];
+
+            
+
+            
+            
+            $data = [
+                        'status' => true,
+                        'pesan' => 'Sukses',
+                        'order' => $order_data,
+                        // 'order_details' => $details,
+                    ];
+        } else {
+            $data = [
+                        'status' => false,
+                        'pesan' => 'Gagal',
+                        
+                    ];
+        }
+
+        echo json_encode($data);
     }
 
     public function transaksi()
